@@ -12,7 +12,7 @@ class TerminalUI:
         self.current_user = None
         self.MIN_CURSOR_Y = 2
         self.MIN_CURSOR_X = 0
-        self.cursor_x = 2
+        self.cursor_x = 0
         self.cursor_y = 2
         self.stdscr = None
         self.last_key_pressed = 0
@@ -102,7 +102,7 @@ class TerminalUI:
     def items_below_exist(self):
         items = []
         for elem in self.existing_elements.keys():
-            if self.existing_elements[elem][0] > self.HEIGHT:
+            if self.existing_elements[elem][0] > self.HEIGHT-1:
                 items.append(elem)
         return len(items) != 0
 
@@ -117,8 +117,8 @@ class TerminalUI:
         self.stdscr.move(self.cursor_y, self.cursor_x)
 
     def next_move(self):
-        if self.last_key_pressed == curses.KEY_DOWN and self.items_below_exist():
-            if self.cursor_y == self.HEIGHT - 1:
+        if self.last_key_pressed == curses.KEY_DOWN:
+            if self.cursor_y == self.HEIGHT - 1 and self.items_below_exist():
                 self.shift_items_up()
             self.cursor_y = self.cursor_y + self.PADDING_Y
         elif self.last_key_pressed == curses.KEY_UP:
@@ -144,10 +144,12 @@ class TerminalUI:
         self.last_elem_y -= self.PADDING_Y
 
     def go_right(self):
-        self.last_elem_x += self.PADDING_X
+        pass
+        # self.last_elem_x += self.PADDING_X
 
     def go_left(self):
-        self.last_elem_x -= self.PADDING_X
+        pass
+        # self.last_elem_x -= self.PADDING_X
 
     def reset_x(self):
         self.last_elem_x = 0
@@ -238,6 +240,7 @@ def run(stdscr, ui):
     import logging
     ui.init_scr(stdscr)
     shown = False
+    curses.curs_set(False)
     while ui.get_last_key_pressed() != ord('q'):
         # see if user clicked a button to change mode
         ui.check_change_mode()
