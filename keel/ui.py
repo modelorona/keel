@@ -134,9 +134,6 @@ class TerminalUI:
     def add(self, string):
         self.existing_elements[string] = [self.last_elem_y, self.last_elem_x]
 
-    # def add(self, item):
-    #     self.existing_elements[] = []
-
     def go_down(self):
         self.last_elem_y += self.PADDING_Y
 
